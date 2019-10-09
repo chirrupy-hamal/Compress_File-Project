@@ -1,0 +1,9 @@
+版本1不能解决汉字问题，一旦是下面的1.txt，压缩直接崩溃
+
+1.txt
+ABBBCCCCCDDDDDDD你好
+
+在FileCompressHuffman.cpp的45行崩溃，
+'你' '好'这两个字符在内存下的存储为c4 e3 ba c3，用两个字节保存一个汉字字符，类似于unsigned short，
+而且这两个字节还要在ASCII码之后，所以单个字节有可能会超过128，而char类型在超过128之后就变成负数了。这就是问题所在。
+解决方法：把所有char类型改成unsigned char
